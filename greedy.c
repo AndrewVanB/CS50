@@ -24,7 +24,7 @@ void calculateChange(float amount);
 */
 
 int main(void) {
-    printf("O hai! How much change is owed?\n");
+    printf("How much change do I owe you?\n");
     
     do {
         inputCheck();
@@ -85,31 +85,43 @@ void inputCheck(void) {
         else if 'penny' (0.01f set at the top) is less than or equal to 'change', get the 'change' value, 
         and negate the 'penny' (0.01f) value from the 'change' value and then increment 'numberOfCoins' by 1.
         
-        Once loop is complete, print the 'numberOfCoins' value, but only 2 numbers after the decimal.
+        else if 'change' is greater than 0.00 but less than 0.0090, set 'change' to 0.00f, resulting in no
+        floatpoint inaccuracy.
+        
+        Once loop is complete, print the 'numberOfCoins' value, and ignores the numbers after the decimal palce.
 */
 
 void calculateChange(float amount) {
     change = amount;
     
     
-    for(;change > 0;) {
+    for(;change > 0.00f;) {
+        
         if(quarter <= change) {
-                                                            if(debug == true) printf("%.2f - %.2f\n", change, quarter);
+                                                            if(debug == true) printf("%.50f - %.2f\n", change, quarter);
             change -= quarter;
             numberOfCoins++;
+            
         } else if(dime <= change) {
-                                                            if(debug == true) printf("%.2f - %.2f\n", change, dime);
+                                                            if(debug == true) printf("%.50f - %.2f\n", change, dime);
             change -= dime;
             numberOfCoins++;
+            
         } else if(nickle <= change) {
-                                                            if(debug == true) printf("%.2f - %.2f\n", change, nickle);
+                                                            if(debug == true) printf("%.50f - %.2f\n", change, nickle);
             change -= nickle;
             numberOfCoins++;
-        } else if(penny >= change) {
-                                                            if(debug == true) printf("%.2f - %.2f\n", change, penny);
+            
+        } else if(change < 0.04f && change >= 0.0090f) {
+                                                            if(debug == true) printf("%.50f - %.2f\n", change, penny);
             change -= penny;
             numberOfCoins++;
+            
+        } else if (change >= 0.00f && change < 0.0090f) {
+                                                            if(debug == true) printf("Float point incaccuraccy detected, setting change to 0\n");
+            change = 0.00f;
         }
     }
-    printf("%.2f\n", numberOfCoins);
+                                                            if(debug == true) printf("Change: %0.50f\n", change);
+    printf("%.0f\n", numberOfCoins);
 }
